@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Result Image</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🎉 Result Image</h1>
+        <img src="{{ result_url }}" alt="Result Image" style="max-width:100%; border: 2px solid #444; border-radius: 10px;">
+        <br><br>
+        <a class="btn" href="{{ result_url }}" download>💾 Download Result</a>
+        <br><br>
+        <a href="/" class="btn">⬅️ Go Back</a>
+    </div>
+</body>
+</html>
