@@ -3,20 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blood Donation System</title>
+    <title>Blood Donation Management</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Welcome to the Blood Donation Management System</h1>
     <nav>
-        <a href="{{ url_for('add_donor') }}">Add Donor</a>
-        <a href="{{ url_for('view_donors') }}">View Donors</a>
-        <a href="{{ url_for('add_blood_bank') }}">Add Blood Bank</a>
-        <a href="{{ url_for('view_blood_banks') }}">View Blood Banks</a>
-        <a href="{{ url_for('add_blood_request') }}">Request Blood</a>
-        <a href="{{ url_for('view_blood_requests') }}">View Requests</a>
-        <a href="{{ url_for('view_inventory') }}">View Inventory</a>
-        <a href="{{ url_for('view_blood_units') }}">View Blood Units</a>
+        <a href="/">Home</a>
+        <a href="/add_donor">Add Donor</a>
+        <a href="/view_donors">View Donors</a>
+        <a href="/view_blood_units">View Blood Units</a>
+        <a href="/view_inventory">View Inventory</a>
     </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-section">
+        <h1>Save Lives, Donate Blood</h1>
+        <p>Your donation can make a difference in someone's life.</p>
+        <a href="/add_donor" class="cta-btn">Become a Donor</a>
+    </header>
+
+    <!-- Blood Donation Stats -->
+    <section class="stats">
+        <div class="stat">
+            <h2>Total Donors</h2>
+            <p>{{ total_donors }}</p>
+        </div>
+        <div class="stat">
+            <h2>Blood Units Donated</h2>
+            <p>{{ total_units_donated }}</p>
+        </div>
+        <div class="stat">
+            <h2>Requests Fulfilled</h2>
+            <p>{{ total_requests_fulfilled }}</p>
+        </div>
+    </section>
+
+    <!-- Why Donate Blood -->
+    <section class="why-donate">
+        <h2>Why Donate Blood?</h2>
+        <p>Donating blood is one of the simplest ways to help others. It takes only a few minutes but can save lives.</p>
+        <ul>
+            <li><strong>Life-saving:</strong> Every donation can save up to 3 lives.</li>
+            <li><strong>Health Benefits:</strong> Regular donations can reduce iron levels and improve heart health.</li>
+            <li><strong>Community Support:</strong> Your donation helps people in your local community and beyond.</li>
+        </ul>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="call-to-action">
+        <h2>Ready to Make a Difference?</h2>
+        <p>Join us in saving lives. Register today and become a blood donor.</p>
+        <a href="/add_donor" class="cta-btn">Donate Blood Now</a>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 LifeBlood Registry. All rights reserved.</p>
+    </footer>
 </body>
 </html>
