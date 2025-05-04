@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Donation System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Welcome to the Blood Donation Management System</h1>
+    <nav>
+        <a href="{{ url_for('add_donor') }}">Add Donor</a>
+        <a href="{{ url_for('view_donors') }}">View Donors</a>
+        <a href="{{ url_for('add_blood_bank') }}">Add Blood Bank</a>
+        <a href="{{ url_for('view_blood_banks') }}">View Blood Banks</a>
+        <a href="{{ url_for('add_blood_request') }}">Request Blood</a>
+        <a href="{{ url_for('view_blood_requests') }}">View Requests</a>
+        <a href="{{ url_for('view_inventory') }}">View Inventory</a>
+        <a href="{{ url_for('view_blood_units') }}">View Blood Units</a>
+    </nav>
+</body>
+</html>

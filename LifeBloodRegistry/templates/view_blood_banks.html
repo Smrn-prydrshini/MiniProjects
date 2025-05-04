@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Blood Banks</title>
+</head>
+<body>
+    <h1>List of Blood Banks</h1>
+    <table>
+        <tr>
+            <th>Blood Bank Name</th>
+            <th>Location</th>
+            <th>Contact No</th>
+        </tr>
+        {% for blood_bank in blood_banks %}
+        <tr>
+            <td>{{ blood_bank.name }}</td>
+            <td>{{ blood_bank.location }}</td>
+            <td>{{ blood_bank.contact_no }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

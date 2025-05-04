@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Blood Requests</title>
+</head>
+<body>
+    <h1>List of Blood Requests</h1>
+    <table>
+        <tr>
+            <th>Recipient Name</th>
+            <th>Blood Type</th>
+            <th>Quantity</th>
+            <th>Status</th>
+        </tr>
+        {% for blood_request in blood_requests %}
+        <tr>
+            <td>{{ blood_request.recipient_name }}</td>
+            <td>{{ blood_request.blood_type }}</td>
+            <td>{{ blood_request.quantity }}</td>
+            <td>{{ blood_request.request_status }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
