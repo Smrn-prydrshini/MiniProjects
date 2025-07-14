@@ -1,4 +1,4 @@
-# 🧠 DIP Project – Image Enhancement & Filtering
+# 🧠 Background Remover – Image Enhancement & Filtering
 
 This project is part of my **Digital Image Processing** coursework. It demonstrates basic image enhancement techniques using **Python**, **OpenCV**, and **Flask**, including grayscale conversion, histogram equalization, and filtering operations like Gaussian and Median blur.
 
