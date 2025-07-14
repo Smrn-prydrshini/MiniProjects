@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash 
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_mysqldb import MySQL
 from datetime import datetime
 
@@ -17,12 +17,16 @@ mysql = MySQL(app)
 @app.route('/')
 def index():
     cursor = mysql.connection.cursor()
+
     cursor.execute("SELECT COUNT(*) FROM DonorDetails")
     total_donors = cursor.fetchone()[0]
+
     cursor.execute("SELECT IFNULL(SUM(Quantity), 0) FROM BloodUnits")
     total_units_donated = cursor.fetchone()[0]
+
     cursor.execute("SELECT COUNT(*) FROM BloodRequests WHERE Status = 'Fulfilled'")
     total_requests_fulfilled = cursor.fetchone()[0]
+
     cursor.close()
     return render_template('index.html',
                            total_donors=total_donors,
@@ -37,24 +41,6 @@ def view_blood_banks():
     blood_banks = cursor.fetchall()
     cursor.close()
     return render_template('view_blood_banks.html', blood_banks=blood_banks)
-
-# ---------------- ADD BLOOD BANK ----------------
-@app.route('/add_blood_bank', methods=['GET', 'POST'])
-def add_blood_bank():
-    if request.method == 'POST':
-        name = request.form['name']
-        location = request.form['location']
-        contact = request.form['contact']
-
-        cursor = mysql.connection.cursor()
-        cursor.execute("INSERT INTO BloodBanks (Name, Location, Contact) VALUES (%s, %s, %s)", (name, location, contact))
-        mysql.connection.commit()
-        cursor.close()
-
-        flash("Blood bank added successfully!")
-        return redirect(url_for('add_blood_bank'))
-
-    return render_template('add_blood_bank.html')
 
 # ---------------- VIEW DONORS ----------------
 @app.route('/view_donors')
@@ -87,15 +73,6 @@ def add_donor():
 
     return render_template('add_donor.html')
 
-@app.route('/view_inventory')
-def view_inventory():
-    cursor = mysql.connection.cursor()
-    cursor.execute("SELECT * FROM BloodUnits")  # Make sure this table exists
-    inventory = cursor.fetchall()
-    cursor.close()
-    return render_template('view_inventory.html', inventory=inventory)
-
-
 # ---------------- VIEW DONATION SUMMARY ----------------
 @app.route('/donation_summary')
 def donation_summary():
@@ -119,15 +96,18 @@ def request_blood():
         Quantity = int(request.form['Quantity'])
 
         cursor = mysql.connection.cursor()
+
         cursor.execute("""INSERT INTO RecipientDetails 
                           (Name, Age, Gender, BloodType, ContactNo, Address, RequestDate) 
                           VALUES (%s, %s, %s, %s, %s, %s, %s)""",
                           (Name, Age, Gender, BloodType, ContactNo, Address, RequestDate))
         RecipientID = cursor.lastrowid
+
         cursor.execute("""INSERT INTO BloodRequests 
                           (RecipientID, BloodType, Quantity, RequestDate, Status) 
                           VALUES (%s, %s, %s, %s, 'Pending')""",
                           (RecipientID, BloodType, Quantity, RequestDate))
+
         mysql.connection.commit()
         cursor.close()
 
@@ -143,18 +123,9 @@ def fulfill_request(RequestID):
     cursor.callproc('FulfillBloodRequest', (RequestID,))
     mysql.connection.commit()
     cursor.close()
+
     flash(f"Request ID {RequestID} fulfilled successfully!")
     return redirect(url_for('index'))
-
-from flask import request
-
-@app.route('/submit', methods=['POST'])
-def submit():
-    name = request.form.get('Name')
-    if not name:
-        return "Name field is required", 400
-    return f"Hello {name}"
-
 
 # ---------------- RUN FLASK ----------------
 if __name__ == '__main__':

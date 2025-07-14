@@ -3,23 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Blood Inventory</title>
+    <title>View Inventory</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Blood Inventory</h1>
-    <table>
-        <tr>
-            <th>Blood Bank</th>
-            <th>Blood Type</th>
-            <th>Quantity</th>
-        </tr>
-        {% for inventory_item in inventory %}
-        <tr>
-            <td>{{ inventory_item.name }}</td>
-            <td>{{ inventory_item.blood_type }}</td>
-            <td>{{ inventory_item.quantity }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+    <!-- Navbar -->
+    <nav>
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('add_donor') }}">Add Donor</a>
+        <a href="{{ url_for('view_donors') }}">View Donors</a>
+        <a href="{{ url_for('add_blood_bank') }}">Add Blood Bank</a>
+        <a href="{{ url_for('view_blood_banks') }}">View Blood Banks</a>
+        <a href="{{ url_for('view_inventory') }}">View Inventory</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <h1>View Inventory</h1>
+        <p>Here is the available inventory of blood groups in different blood banks.</p>
+    </div>
+
+    <!-- Table to Display Inventory -->
+    <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Inventory ID</th>
+                    <th>Blood Bank</th>
+                    <th>Blood Group</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for inventory in inventories %}
+                <tr>
+                    <td>{{ inventory.id }}</td>
+                    <td>{{ inventory.blood_bank_name }}</td>
+                    <td>{{ inventory.blood_group }}</td>
+                    <td>{{ inventory.quantity }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 LifeBlood Registry. All rights reserved.</p>
+    </footer>
 </body>
 </html>

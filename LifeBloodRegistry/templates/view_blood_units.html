@@ -4,24 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Blood Units</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Blood Units</h1>
-    <table>
-        <tr>
-            <th>Donor</th>
-            <th>Blood Bank</th>
-            <th>Donation Date</th>
-            <th>Quantity</th>
-        </tr>
-        {% for blood_unit in blood_units %}
-        <tr>
-            <td>{{ blood_unit.donor_name }}</td>
-            <td>{{ blood_unit.blood_bank_name }}</td>
-            <td>{{ blood_unit.donation_date }}</td>
-            <td>{{ blood_unit.quantity }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+    <!-- Navbar -->
+    <nav>
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('add_donor') }}">Add Donor</a>
+        <a href="{{ url_for('view_donors') }}">View Donors</a>
+        <a href="{{ url_for('add_blood_bank') }}">Add Blood Bank</a>
+        <a href="{{ url_for('view_blood_banks') }}">View Blood Banks</a>
+        <a href="{{ url_for('view_inventory') }}">View Inventory</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <h1>View Blood Units</h1>
+        <p>List of available blood units in the inventory.</p>
+    </div>
+
+    <!-- Table to Display Blood Units -->
+    <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Unit ID</th>
+                    <th>Blood Group</th>
+                    <th>Quantity</th>
+                    <th>Expiry Date</th>
+                    <th>Blood Bank</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for unit in blood_units %}
+                <tr>
+                    <td>{{ unit.id }}</td>
+                    <td>{{ unit.blood_group }}</td>
+                    <td>{{ unit.quantity }}</td>
+                    <td>{{ unit.expiry_date }}</td>
+                    <td>{{ unit.blood_bank_name }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 LifeBlood Registry. All rights reserved.</p>
+    </footer>
 </body>
 </html>

@@ -4,21 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Donor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Add a New Donor</h1>
-    <form method="POST">
-        <label>Name:</label>
-        <input type="text" name="name" required><br><br>
-        <label>Age:</label>
-        <input type="number" name="age" required><br><br>
-        <label>Blood Type:</label>
-        <input type="text" name="blood_type" required><br><br>
-        <label>Contact Number:</label>
-        <input type="text" name="contact_no" required><br><br>
-        <label>Last Donation Date:</label>
-        <input type="date" name="last_donation" required><br><br>
-        <button type="submit">Add Donor</button>
-    </form>
+    <!-- Navbar -->
+    <nav>
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('add_donor') }}">Add Donor</a>
+        <a href="{{ url_for('view_donors') }}">View Donors</a>
+        <a href="{{ url_for('add_blood_bank') }}">Add Blood Bank</a>
+        <a href="{{ url_for('view_blood_banks') }}">View Blood Banks</a>
+        <a href="{{ url_for('view_inventory') }}">View Inventory</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <h1>Add Donor</h1>
+        <p>Enter donor details below to add a new donor to the registry.</p>
+    </div>
+
+    <!-- Form Section -->
+    <div class="container">
+        <form action="{{ url_for('add_donor') }}" method="POST">
+            <label for="name">Donor Name</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="age">Age</label>
+            <input type="number" id="age" name="age" required>
+
+            <label for="blood_group">Blood Group</label>
+            <input type="text" id="blood_group" name="blood_group" required>
+
+            <label for="contact">Contact</label>
+            <input type="text" id="contact" name="contact" required>
+
+            <input type="submit" value="Add Donor">
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 LifeBlood Registry. All rights reserved.</p>
+    </footer>
 </body>
 </html>

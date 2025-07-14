@@ -4,17 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Blood Bank</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Add a New Blood Bank</h1>
-    <form method="POST">
-        <label>Blood Bank Name:</label>
-        <input type="text" name="name" required><br><br>
-        <label>Location:</label>
-        <input type="text" name="location" required><br><br>
-        <label>Contact Number:</label>
-        <input type="text" name="contact_no" required><br><br>
-        <button type="submit">Add Blood Bank</button>
-    </form>
+    <!-- Navbar -->
+    <nav>
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('add_donor') }}">Add Donor</a>
+        <a href="{{ url_for('view_donors') }}">View Donors</a>
+        <a href="{{ url_for('add_blood_bank') }}">Add Blood Bank</a>
+        <a href="{{ url_for('view_blood_banks') }}">View Blood Banks</a>
+        <a href="{{ url_for('view_inventory') }}">View Inventory</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <h1>Add Blood Bank</h1>
+        <p>Enter blood bank details below to add a new blood bank.</p>
+    </div>
+
+    <!-- Form Section -->
+    <div class="container">
+        <form action="{{ url_for('add_blood_bank') }}" method="POST">
+            <label for="name">Blood Bank Name</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="location">Location</label>
+            <input type="text" id="location" name="location" required>
+
+            <label for="contact">Contact</label>
+            <input type="text" id="contact" name="contact" required>
+
+            <input type="submit" value="Add Blood Bank">
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 LifeBlood Registry. All rights reserved.</p>
+    </footer>
 </body>
 </html>

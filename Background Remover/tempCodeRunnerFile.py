@@ -47,7 +47,7 @@ def upload_file():
 
     return render_template('result.html', result_url=result_url)
 
-# Background removal function
+# Improved Background removal function
 def remove_background(background_path, target_path):
     # Load and resize images
     background = cv2.imread(background_path)
@@ -55,31 +55,33 @@ def remove_background(background_path, target_path):
     background = cv2.resize(background, (640, 480))
     target = cv2.resize(target, (640, 480))
 
-    # Get color difference
-    diff = cv2.absdiff(background, target)
-    diff_sum = np.sum(diff, axis=2)  # Sum across color channels
+    # Convert to grayscale
+    bg_gray = cv2.cvtColor(background, cv2.COLOR_BGR2GRAY)
+    target_gray = cv2.cvtColor(target, cv2.COLOR_BGR2GRAY)
 
-    # Apply threshold
-    _, mask = cv2.threshold(diff_sum.astype(np.uint8), 50, 255, cv2.THRESH_BINARY)
+    # Subtract grayscale images
+    diff = cv2.absdiff(bg_gray, target_gray)
 
-    # Convert to uint8
-    mask = np.uint8(mask)
+    # Threshold to create binary mask
+    _, mask = cv2.threshold(diff, 20, 255, cv2.THRESH_BINARY)
 
-    # Morphological operations
-    kernel = np.ones((3, 3), np.uint8)
-    mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel, iterations=2)  # Fill small holes
-    mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel, iterations=1)   # Remove noise
-
-    # Optional: Smooth edges (blur mask)
+    # Morphological improvements
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (7, 7))
+    mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel, iterations=2)
+    mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel, iterations=2)
+    mask = cv2.dilate(mask, kernel, iterations=1)
     mask = cv2.GaussianBlur(mask, (5, 5), 0)
 
-    # Extract foreground
-    foreground = cv2.bitwise_and(target, target, mask=mask)
+    # Normalize mask to use as alpha
+    alpha = mask.astype(np.uint8)
 
-    return foreground
+    # Convert BGR target image to BGRA (add alpha channel)
+    b, g, r = cv2.split(target)
+    result = cv2.merge([b, g, r, alpha])
 
+    return result
 
-# Route to serve the uploaded file (result)
+# Route to serve uploaded file
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)

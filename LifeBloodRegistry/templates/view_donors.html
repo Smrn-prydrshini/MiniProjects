@@ -4,26 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Donors</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>List of Donors</h1>
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Age</th>
-            <th>Blood Type</th>
-            <th>Contact No</th>
-            <th>Last Donation</th>
-        </tr>
-        {% for donor in donors %}
-        <tr>
-            <td>{{ donor.name }}</td>
-            <td>{{ donor.age }}</td>
-            <td>{{ donor.blood_type }}</td>
-            <td>{{ donor.contact_no }}</td>
-            <td>{{ donor.last_donation }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+    <!-- Navbar -->
+    <nav>
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('add_donor') }}">Add Donor</a>
+        <a href="{{ url_for('view_donors') }}">View Donors</a>
+        <a href="{{ url_for('add_blood_bank') }}">Add Blood Bank</a>
+        <a href="{{ url_for('view_blood_banks') }}">View Blood Banks</a>
+        <a href="{{ url_for('view_inventory') }}">View Inventory</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <h1>View Donors</h1>
+        <p>Here are the registered donors in the system.</p>
+    </div>
+
+    <!-- Table to Display Donors -->
+    <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Donor ID</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Blood Group</th>
+                    <th>Contact</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Loop to display donor details -->
+                {% for donor in donors %}
+                <tr>
+                    <td>{{ donor.id }}</td>
+                    <td>{{ donor.name }}</td>
+                    <td>{{ donor.age }}</td>
+                    <td>{{ donor.blood_group }}</td>
+                    <td>{{ donor.contact }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 LifeBlood Registry. All rights reserved.</p>
+    </footer>
 </body>
 </html>
