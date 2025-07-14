@@ -26,8 +26,7 @@ The goal of this project is to allow users to upload an image through a web inte
 
 ### 🔧 Step 1: Clone the Repository
 ```bash
-git clone https://github.com/Smrn-prydrshini/MiniProjects.git
-cd MiniProjects/DIP\ Project
+git clone https://github.com/Smrn-prydrshini/MiniProjects/tree/main/Background%20Remover
 ```
 
 ### 🧪 Step 2: Install Dependencies
@@ -47,7 +46,7 @@ Upload an image and see the result.
 ## 🧩 Folder Structure
 
 ```
-DIP Project/
+Background Remover/
 │
 ├── app.py                  # Main Flask backend
 ├── README.md               # Project documentation
