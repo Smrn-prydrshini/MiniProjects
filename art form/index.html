@@ -1,0 +1,239 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>India Art Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #f0f0f5;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    h1 {
+      margin: 20px 0;
+      color: #2c3e50;
+      font-size: 28px;
+    }
+    #map {
+      height: 700px;
+      width: 90%;
+      margin: auto;
+      border: 5px solid #34495e;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+    .leaflet-popup-content img {
+      border-radius: 8px;
+      margin-top: 5px;
+    }
+    .legend {
+      background: white;
+      line-height: 1.5em;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      font-size: 14px;
+    }
+    .legend span {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      margin-right: 5px;
+      vertical-align: middle;
+      border-radius: 50%;
+    }
+    .buttons {
+      margin: 10px;
+    }
+    .buttons button {
+      margin: 2px;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 5px;
+      background: #34495e;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .buttons button:hover {
+      background: #2c3e50;
+    }
+  </style>
+</head>
+<body>
+  <h1>Exploring India’s Artistic Diversity Across Regions</h1>
+  
+  <div class="buttons">
+    <button onclick="showRegion('North')">North</button>
+    <button onclick="showRegion('South')">South</button>
+    <button onclick="showRegion('East')">East</button>
+    <button onclick="showRegion('West')">West</button>
+    <button onclick="showRegion('Northeast')">Northeast</button>
+    <button onclick="showRegion('All')">Show All</button>
+  </div>
+  
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // Initialize map
+    var map = L.map('map').setView([22.9734, 78.6569], 5);
+
+    // Add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18
+    }).addTo(map);
+
+    // Region colors
+    var regionColors = {
+      "North": "red",
+      "South": "green",
+      "East": "orange",
+      "West": "blue",
+      "Northeast": "purple"
+    };
+
+    // Art locations array     var artLocations = [
+var artLocations = [
+  // ----------------- NORTH -----------------
+  {coords:[30.7,76.8], region:"North", art:"Phulkari Embroidery", desc:
+    "Phulkari: Traditional embroidery from Punjab, meaning 'flower work'. Originated in rural Punjab, mostly by women. Features floral and geometric motifs using vibrant silk threads on shawls, dupattas, and garments. Symbolizes prosperity, celebration, and community heritage. Techniques passed down generations, often during social gatherings.<br><img src='https://upload.wikimedia.org/wikipedia/commons/5/5b/Phulkari_embroidery.jpg' width='150'>"},
+  {coords:[30.0,79.0], region:"North", art:"Uttarakhand Handicrafts", desc:
+    "Uttarakhand Handicrafts: Includes wood carvings, woolen textiles, and metalwork. Reflects Himalayan culture, temples, and local traditions. Artisans use natural dyes, handloom weaving, and traditional patterns. Items often depict nature, animals, and folklore. Popular in Almora and Dehradun.<br><img src='https://upload.wikimedia.org/wikipedia/commons/2/2c/Uttarakhand_handicraft.jpg' width='150'>"},
+  {coords:[28.6,77.2], region:"North", art:"Delhi Art", desc:
+    "Delhi Art: Blend of Mughal miniature traditions and modern contemporary styles. Features murals, gallery paintings, and urban street art. Themes range from mythology to social commentary, reflecting India's evolving capital city. Exhibited in galleries and public spaces.<br><img src='https://upload.wikimedia.org/wikipedia/commons/3/3b/Delhi_art.jpg' width='150'>"},
+  {coords:[34.2,76.3], region:"North", art:"Kashmiri Crafts", desc:
+    "Kashmiri Crafts: Famous for hand-knotted carpets, papier-mâché, and embroidered pashmina shawls. Artisans employ intricate floral motifs, paisleys, and natural dyes inspired by Kashmir's valleys. Items often reflect Mughal influences and local folklore.<br><img src='https://upload.wikimedia.org/wikipedia/commons/6/65/Kashmiri_art.jpg' width='150'>"},
+  {coords:[34.1,75.2], region:"North", art:"Ladakh Crafts", desc:
+    "Ladakh Crafts: Includes Thangka paintings, traditional jewelry, and wooden carvings. Reflects Buddhist culture, Himalayan landscapes, and nomadic lifestyle. Colors, symbols, and designs often have spiritual significance. Handcrafted by monks and local artisans.<br><img src='https://upload.wikimedia.org/wikipedia/commons/f/f8/Ladakh_art.jpg' width='150'>"},
+  {coords:[30.9,76.2], region:"North", art:"Pahari Painting", desc:
+    "Pahari Miniatures: Originated in Himachal Pradesh between 17th-19th century. Delicate paintings on paper depicting Hindu epics, romantic tales, and nature. Features bright colors, fine brushwork, and intricate borders. Patronized by Rajput rulers.<br><img src='https://upload.wikimedia.org/wikipedia/commons/1/12/Pahari_Miniature.jpg' width='150'>"},
+  {coords:[25.4,81.9], region:"North", art:"Uttar Pradesh Textile Arts", desc:
+    "Textile Arts of UP: Banarasi silk weaving and chikankari embroidery are highlights. Banarasi sarees showcase gold and silver brocade motifs; chikankari features delicate white-thread embroidery on fine cotton. These crafts blend tradition, luxury, and ceremonial significance.<br><img src='https://upload.wikimedia.org/wikipedia/commons/6/6b/UP_handloom.jpg' width='150'>"},
+  {coords:[30.7,76.8], region:"North", art:"Chandigarh Modern Art", desc:
+    "Chandigarh Art: Contemporary urban art, murals, and sculptures influenced by Le Corbusier's city planning. Themes explore social issues, city life, and modern aesthetics. Exhibited in public spaces, galleries, and cultural centers.<br><img src='https://upload.wikimedia.org/wikipedia/commons/0/01/Chandigarh_art.jpg' width='150'>"},
+  
+  // ----------------- SOUTH -----------------
+  {coords:[13.1,80.2], region:"South", art:"Tanjore Painting", desc:
+    "Tanjore Painting: Originated in Tamil Nadu, 16th century. Depicts Hindu deities with gold foil, vibrant colors, and gesso paste for 3D effects. Painted on wooden panels, combining devotion and artistry. Popular in temples and homes for spiritual significance.<br><img src='https://upload.wikimedia.org/wikipedia/commons/6/6b/Thanjavur_painting.jpg' width='150'>"},
+  {coords:[12.9,77.5], region:"South", art:"Mysore Painting", desc:
+    "Mysore Painting: Karnataka's traditional art form depicting Hindu mythology. Known for subtle colors, precise lines, and gold embellishments. Painted on handmade paper, silk, or wooden boards. Often created for temples and royal commissions.<br><img src='https://upload.wikimedia.org/wikipedia/commons/1/15/Mysore_painting.jpg' width='150'>"},
+  {coords:[11.0,76.9], region:"South", art:"Kerala Murals", desc:
+    "Kerala Mural Paintings: Ancient temple murals portraying mythological stories. Uses natural pigments, bright reds, greens, and yellows. Figures of gods, humans, and animals are depicted in intricate detail. Originated from 9th century temple traditions.<br><img src='https://upload.wikimedia.org/wikipedia/commons/3/3f/Kerala_mural.jpg' width='150'>"},
+  {coords:[16.5,80.6], region:"South", art:"Andhra Kalamkari", desc:
+    "Kalamkari: Hand-painted cotton fabric art from Andhra Pradesh. Illustrates epics, folklore, and village life using natural dyes and pen-brush techniques. Borders and motifs are intricately detailed. Traditionally used in garments, wall hangings, and temple decorations.<br><img src='https://upload.wikimedia.org/wikipedia/commons/0/0b/Kalamkari_Andhra.jpg' width='150'>"},
+  {coords:[17.0,79.5], region:"South", art:"Telangana Arts", desc:
+    "Telangana Art: Includes Cheriyal scrolls, temple murals, and folk paintings. Narrates stories from local legends with stylized human and animal figures. Scrolls serve both storytelling and ritualistic purposes. Colors derived from natural pigments.<br><img src='https://upload.wikimedia.org/wikipedia/commons/9/9b/Telangana_art.jpg' width='150'>"},
+  {coords:[11.9,79.8], region:"South", art:"Puducherry Arts", desc:
+    "Puducherry Art: Blend of French colonial influence and Indian tradition. Features contemporary paintings, murals, and handicrafts. Colors are vibrant, and subjects range from nature to urban life. Often showcased in local galleries and cultural festivals.<br><img src='https://upload.wikimedia.org/wikipedia/commons/2/2d/Puducherry_art.jpg' width='150'>"},
+  {coords:[10.5,72.6], region:"South", art:"Lakshadweep Crafts", desc:
+    "Lakshadweep Crafts: Island tribal arts using coconut fibers, shells, and coir. Designs feature marine life, flora, and geometric patterns. Used in home decor, jewelry, and traditional rituals. Artisanal weaving and carving techniques have been passed for generations.<br><img src='https://upload.wikimedia.org/wikipedia/commons/1/1f/Lakshadweep_art.jpg' width='150'>"},
+  
+  // ----------------- EAST -----------------
+  {coords:[25.5,85.1], region:"East", art:"Madhubani Painting", desc:
+    "Madhubani Painting: Folk art from Bihar, traditionally on walls or handmade paper. Depicts gods, festivals, and nature using natural dyes. Features geometrical patterns, vibrant colors, and symbolic motifs. Mostly painted by women, passed through generations.<br><img src='https://upload.wikimedia.org/wikipedia/commons/4/45/Madhubani_Art.jpg' width='150'>"},
+  {coords:[23.6,85.3], region:"East", art:"Jharkhand Tribal Art", desc:
+    "Jharkhand Tribal Art: Inspired by Warli tradition. Features tribal life, rituals, and nature. Hand-painted using earthy colors and bamboo brushes. Often on walls and textiles, expressing community stories and beliefs.<br><img src='https://upload.wikimedia.org/wikipedia/commons/4/43/Jharkhand_art.jpg' width='150'>"},
+  {coords:[20.9,85.1], region:"East", art:"Pattachitra", desc:
+    "Pattachitra: Odisha scroll paintings depicting Jagannath culture and mythological stories. Intricate borders, vivid colors, and natural pigments. Painted on cloth using traditional techniques. Artists follow strict iconography and symbolism.<br><img src='https://upload.wikimedia.org/wikipedia/commons/3/3c/Pattachitra.jpg' width='150'>"},
+  {coords:[22.6,88.4], region:"East", art:"Bengal School", desc:
+    "Bengal School of Art: Early 20th-century revivalist movement combining traditional Indian aesthetics and modernism. Focused on spirituality, nationalism, and cultural pride. Media include watercolor, oil, and ink.<br><img src='https://upload.wikimedia.org/wikipedia/commons/9/97/Bengal_School.jpg' width='150'>"},
+  {coords:[21.2,81.6], region:"East", art:"Chhattisgarh Tribal Art", desc:
+    "Gond Paintings: Folk art of Chhattisgarh depicting myths, nature, and daily life. Uses dots, lines, and vibrant colors on walls, paper, and cloth. Inspired by local flora, fauna, and ancestral stories.<br><img src='https://upload.wikimedia.org/wikipedia/commons/7/7d/Gond_art.jpg' width='150'>"},
+  {coords:[11.6,92.7], region:"East", art:"Andaman Crafts", desc:
+    "Andaman Tribal Crafts: Includes wood carvings, shell jewelry, and basketry. Traditional motifs reflect Nicobar and Andaman tribal culture. Used for utility, decoration, and ritualistic purposes.<br><img src='https://upload.wikimedia.org/wikipedia/commons/1/19/Andaman_art.jpg' width='150'>"},
+  
+  // ----------------- WEST -----------------
+  {coords:[27.0,75.8], region:"West", art:"Rajasthani Miniature", desc:
+    "Rajasthani Miniature: Rajput court paintings showing epics, kings, and nature. Bold colors, gold embellishments, and intricate facial expressions. Painted on paper or cloth. Often commissioned by royalty to depict valor, romance, and devotion.<br><img src='https://upload.wikimedia.org/wikipedia/commons/0/0e/Rajasthani_miniature_painting.jpg' width='150'>"},
+  {coords:[22.3,70.8], region:"West", art:"Gujarat Crafts", desc:
+    "Gujarat Arts & Crafts: Includes Bandhani tie-dye, Patola weaving, embroidery, and folk motifs. Bright, geometric, and colorful. Reflects cultural festivals, weddings, and traditional attire. Handcrafted with community participation.<br><img src='https://upload.wikimedia.org/wikipedia/commons/3/32/Gujarat_art.jpg' width='150'>"},
+  {coords:[21.1,79.1], region:"West", art:"Madhya Pradesh Arts", desc:
+    "Madhya Pradesh Tribal Art: Gond and Bhil paintings, terracotta, and handicrafts. Themes include folklore, nature, and mythology. Artworks often use vibrant colors, dots, and patterns to tell tribal stories.<br><img src='https://upload.wikimedia.org/wikipedia/commons/7/7d/Gond_art.jpg' width='150'>"},
+  {coords:[19.1,72.8], region:"West", art:"Maharashtra Warli", desc:
+    "Warli Art: Tribal murals using stick figures, triangles, and circles. Depicts everyday life, nature, and festivals. Traditionally done on mud walls using rice paste and natural pigments. Emphasizes simplicity and storytelling.<br><img src='https://upload.wikimedia.org/wikipedia/commons/3/30/Warli_art.jpg' width='150'>"},
+  {coords:[15.4,73.8], region:"West", art:"Goa Art", desc:
+    "Goa Art: Portuguese colonial influence in churches, frescoes, and murals. Religious themes dominate, painted in bright, vivid colors. Combines European techniques with Indian subjects.<br><img src='https://upload.wikimedia.org/wikipedia/commons/5/52/Goa_art.jpg' width='150'>"},
+  {coords:[20.3,73.0], region:"West", art:"Dadra & Nagar Haveli Crafts", desc:
+    "Tribal Crafts: Jewelry, bamboo work, and traditional motifs from local tribes. Materials are mostly natural like bamboo, cane, and clay. Patterns are bold, geometric, and symbolic.<br><img src='https://upload.wikimedia.org/wikipedia/commons/9/94/Dadra_art.jpg' width='150'>"},
+  
+  // ----------------- NORTHEAST -----------------
+  {coords:[26.2,91.7], region:"Northeast", art:"Majuli Masks", desc:
+    "Majuli Masks: Assam’s festival masks made from bamboo, cane, and clay. Used in Sattriya dance dramas and religious performances. Colorful, expressive, and rich in folklore. Each mask represents a deity or character.<br><img src='https://upload.wikimedia.org/wikipedia/commons/f/f7/Majuli_mask.jpg' width='150'>"},
+  {coords:[27.1,93.6], region:"Northeast", art:"Arunachal Tribal Art", desc:
+    "Arunachal Tribal Art: Bamboo weaving, woodcraft, and traditional designs. Reflects diverse tribes, rituals, and daily life. Items include ornaments, utensils, and decorative objects. Each tribe has unique motifs.<br><img src='https://upload.wikimedia.org/wikipedia/commons/3/32/Arunachal_art.jpg' width='150'>"},
+  {coords:[26.0,94.0], region:"Northeast", art:"Meghalaya Weaving", desc:
+    "Meghalaya Handlooms: Woven by Khasi and Garo tribes. Shawls, blankets, and garments feature colorful, intricate patterns inspired by nature and culture. Techniques passed through generations.<br><img src='https://upload.wikimedia.org/wikipedia/commons/2/2b/Meghalaya_art.jpg' width='150'>"},
+  {coords:[27.3,95.0], region:"Northeast", art:"Nagaland Tribal Crafts", desc:
+    "Nagaland Art: Beadwork, shawls, wood carvings, and ceremonial ornaments. Each tribe has distinctive symbols and motifs, representing heritage and identity. Bright colors and geometric designs dominate.<br><img src='https://upload.wikimedia.org/wikipedia/commons/1/17/Nagaland_art.jpg' width='150'>"},
+  {coords:[26.5,92.8], region:"Northeast", art:"Tripura Crafts", desc:
+    "Tripura Crafts: Bamboo and cane weaving, terracotta, and jewelry. Motifs inspired by flora, fauna, and tribal legends. Items serve decorative, functional, and ceremonial purposes.<br><img src='https://upload.wikimedia.org/wikipedia/commons/5/55/Tripura_art.jpg' width='150'>"},
+  {coords:[27.5,95.7], region:"Northeast", art:"Manipur Arts", desc:
+    "Manipur Art: Traditional dance costumes, Lai Haraoba masks, and handloom textiles. Features bright colors, detailed embroidery, and cultural symbolism. Integral to rituals and festivals.<br><img src='https://upload.wikimedia.org/wikipedia/commons/9/9e/Manipur_art.jpg' width='150'>"}
+];
+
+
+
+    // Store markers by region
+    var regionMarkers = {
+      "North": [],
+      "South": [],
+      "East": [],
+      "West": [],
+      "Northeast": []
+    };
+
+    // Add markers
+    artLocations.forEach(loc => {
+      var marker = L.circleMarker(loc.coords, {
+        color: regionColors[loc.region],
+        fillColor: regionColors[loc.region],
+        fillOpacity: 0.7,
+        radius: 10
+      }).bindPopup(`<b>${loc.region} - ${loc.art}</b><br>${loc.desc}`);
+      regionMarkers[loc.region].push(marker);
+      marker.addTo(map);
+    });
+
+marker.bindPopup(
+  "<b>Phulkari Embroidery</b><br>" +
+  "Traditional embroidery from Punjab. Vibrant silk threads, floral motifs.<br>" +
+  "<img src='https://upload.wikimedia.org/wikipedia/commons/5/5b/Phulkari_embroidery.jpg' width='150'>"
+);
+
+
+    // Show only one region
+    function showRegion(region) {
+      // Remove all markers first
+      for (var key in regionMarkers) {
+        regionMarkers[key].forEach(m => map.removeLayer(m));
+      }
+
+      // If "All", add all markers
+      if(region === "All") {
+        for (var key in regionMarkers) {
+          regionMarkers[key].forEach(m => m.addTo(map));
+        }
+      } else {
+        regionMarkers[region].forEach(m => m.addTo(map));
+      }
+    }
+
+    // Add Legend
+    var legend = L.control({position: 'bottomright'});
+    legend.onAdd = function(map) {
+      var div = L.DomUtil.create('div', 'legend');
+      div.innerHTML = "<b>Region Colors</b><br>";
+      for (var region in regionColors) {
+        div.innerHTML += `<span style="background:${regionColors[region]}"></span>${region}<br>`;
+      }
+      return div;
+    };
+    legend.addTo(map);
+  </script>
+</body>
+</html>
